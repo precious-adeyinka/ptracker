@@ -104,6 +104,7 @@ impl Project {
         Ok(())
     }
 
+    #[allow(dead_code)]
     fn save(&mut self) -> anyhow::Result<()> {
         let file = File::create(self.filename())?;
         let writer = BufWriter::new(file);

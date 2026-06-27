@@ -104,19 +104,6 @@ impl Project {
         Ok(())
     }
 
-    #[allow(dead_code)]
-    fn save(&mut self) -> anyhow::Result<()> {
-        let file = File::create(self.filename())?;
-        let writer = BufWriter::new(file);
-        serde_json::to_writer_pretty(writer, self)?;
-
-        let event = FileEvent::Created(Self::to_filename(&self.name));
-        let msg = Self::describe_event(&self, &event);
-        let _ = Self::log_activity(&self, &msg)?;
-
-        Ok(())
-    }
-
     fn  update(&mut self) -> anyhow::Result<()> {
         let file = File::create(self.filename())?;
         let writer = BufWriter::new(file);
@@ -196,6 +183,10 @@ impl StorageBackend for Project {
         let file = File::create(self.filename())?;
         let writer = BufWriter::new(file);
         serde_json::to_writer_pretty(writer, self)?;
+
+        let event = FileEvent::Created(Self::to_filename(&self.name));
+        let msg = Self::describe_event(&self, &event);
+        let _ = Self::log_activity(&self, &msg)?;
 
         Ok(())
     }

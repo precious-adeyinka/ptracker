@@ -1,7 +1,7 @@
 [package]
 name = "project-tracker"
 version = "0.1.0"
-edition = "2024"
+edition = "2021"
 description = "A CLI tool for tracking projects, file activity, and hours for freelancers"
 license = "MIT"
 repository = "https://github.com/precious-adeyinka/ptracker"

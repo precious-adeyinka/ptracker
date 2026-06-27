@@ -55,7 +55,7 @@ impl Project {
             EventKind::Create(_) => Some(FileEvent::Created(path)),
             EventKind::Modify(_) => Some(FileEvent::Modified(path)  ),
             EventKind::Remove(_) => Some(FileEvent::Deleted(path)),
-            _ => None, // ignore other events
+            _ => None,
         }
     }
 }

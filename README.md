@@ -2,10 +2,28 @@
 
 A CLI tool for tracking projects, file activity, and hours for freelancers.
 
+|                 |                                             |
+| --------------: | ------------------------------------------- |
+|  Latest Version | [![Latest version][badge-version]][crate]   |
+| Crate Downloads | [![Crate downloads][badge-crate-dl]][crate] |
+|         License | [![Crate license][badge-license]][github]   |
+
+<details>
+<summary><strong>Table of Contents</strong></summary>
+
+- [Installation](#installation)
+- [Usage](#usage)
+- [How it works](#how-it-works)
+- [Data](#data)
+- [Authors](#authors)
+- [License](#license)
+
+</details>
+
 ## Installation
 
 ```bash
-cargo install project-tracker
+cargo install ptracker
 ```
 
 ## Usage
@@ -32,7 +50,10 @@ ptracker delete "My Project"
 
 ## How it works
 
-ptracker watches your project folders in real time, logging every file creation, modification, rename, and deletion. All activity is saved to a JSON project file and a human-readable log file so you can prove to clients exactly what you built and when.
+ptracker watches your project folders in real time, logging every file creation,
+modification, rename, and deletion. All activity is saved to a JSON project file
+and a human-readable log file so you can prove to clients exactly what you built
+and when.
 
 ## Data
 
@@ -41,6 +62,20 @@ Each project creates two files in your current directory:
 - `projectname.json` — structured project data
 - `projectname.log` — timestamped activity log
 
+## Release History
+
+See the [changelog](https://github.com/precious-adeyinka/ptracker/blob/main/CHANGELOG.md) for a full release history.
+
+## Authors
+
+Created and maintained by [Precious Adeyinka](https://github.com/precious-adeyinka).
+
 ## License
 
-MIT
+Licensed under the MIT license — see [LICENSE](https://github.com/precious-adeyinka/ptracker/blob/main/LICENSE.txt) for details.
+
+[badge-crate-dl]: https://img.shields.io/crates/d/ptracker.svg?style=flat-square
+[badge-license]: https://img.shields.io/crates/l/ptracker.svg?style=flat-square
+[badge-version]: https://img.shields.io/crates/v/ptracker.svg?style=flat-square
+[crate]: https://crates.io/crates/ptracker
+[github]: https://github.com/precious-adeyinka/ptracker

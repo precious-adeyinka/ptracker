@@ -1,5 +1,5 @@
 [package]
-name = "project-tracker"
+name = "ptracker"
 version = "0.1.0"
 edition = "2021"
 description = "A CLI tool for tracking projects, file activity, and hours for freelancers"

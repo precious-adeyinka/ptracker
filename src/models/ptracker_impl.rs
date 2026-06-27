@@ -38,7 +38,7 @@ impl Project {
                 let now = Instant::now();
                 if let Some(last) = last_seen.get(&path_key) {
                     if now.duration_since(*last).as_millis() < 500 {
-                        continue // duplicate, skip it
+                        continue
                     }
                 }
                 last_seen.insert(path_key, now);
@@ -245,9 +245,8 @@ mod tests {
         assert!(saved_project.logs.len() > 0);
         assert!(saved_project.events.len() > 0);
 
-        // cleanup after test so it doesn't leave files around
         std::fs::remove_file("testproject.json").unwrap();
-        std::fs::remove_file("testproject.log").ok(); // ok() instead of unwrap in case log doesn't exist yet
+        std::fs::remove_file("testproject.log").ok();
     }
 
     #[test]
@@ -318,9 +317,7 @@ mod tests {
         
         Project::rename_project("OldName", "NewName").unwrap();
         
-        // old file should be gone
         assert!(!std::path::Path::new("oldname.json").exists());
-        // new file should exist
         assert!(std::path::Path::new("newname.json").exists());
         
         std::fs::remove_file("newname.json").unwrap();

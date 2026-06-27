@@ -1,0 +1,27 @@
+[package]
+name = "project-tracker"
+version = "0.1.0"
+edition = "2024"
+description = "A CLI tool for tracking projects, file activity, and hours for freelancers"
+license = "MIT"
+repository = "https://github.com/precious-adeyinka/ptracker"
+homepage = "https://github.com/precious-adeyinka/ptracker"
+documentation = "https://github.com/precious-adeyinka/ptracker#readme"
+readme = "README.md"
+keywords = ["cli", "tracker", "freelance", "productivity", "files"]
+categories = ["command-line-utilities", "filesystem"]
+authors = ["Precious Adeyinka <officialpreciousadeyinka@gmail.com>"]
+exclude = ["dist/", ".env", "*.json", "*.log", "target/"]
+
+[dependencies]
+anyhow = "1.0.103"
+chrono = "0.4.45"
+clap = {version = "4", features = ['derive']}
+comfy-table = "7.2.2"
+notify = "8.2.0"
+serde = {version = "1.0", features = ['derive']}
+serde_json = "1.0"
+
+[[bin]]
+name= "ptracker"
+path= "src/main.rs"

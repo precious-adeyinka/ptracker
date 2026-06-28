@@ -4,12 +4,13 @@ A CLI tool for tracking projects, file activity, and hours for freelancers.
 
 ### Features
 
-- `init` — initialize a new project
-- `watch` — real-time file system monitoring with deduplication
+- `init` — initialize a new project with global storage in `~/.ptracker`
+- `watch` — real-time file system monitoring with automatic session tracking
 - `log` — manually log hours to a project
-- `summary` — view project details and activity logs in a table
-- `rename` — rename a project and its associated files
-- `delete` — remove a project and its logs
+- `summary` — view project details, hours, and today's session activity
+- `list` — show all projects across your machine in a table
+- `rename` — rename a project globally
+- `delete` — remove a project and all its data
 
 |                 |                                             |
 | --------------: | ------------------------------------------- |
@@ -24,6 +25,7 @@ A CLI tool for tracking projects, file activity, and hours for freelancers.
 - [Usage](#usage)
 - [How it works](#how-it-works)
 - [Data](#data)
+- [Release History](#release-history)
 - [Authors](#authors)
 - [License](#license)
 
@@ -41,35 +43,59 @@ cargo install ptracker
 # Initialize a new project
 ptracker init "My Project"
 
+# Initialize with a specific folder to watch
+ptracker init "My Project" --path ./src
+
 # Watch a folder and track file activity
-ptracker watch "My Project" "./src"
+ptracker watch "My Project"
+
+# Watch a specific folder for this session
+ptracker watch "My Project" --path ./src
 
 # Log hours manually
 ptracker log "My Project" 3.5
 
-# View project summary
+# View project summary with session breakdown
 ptracker summary "My Project"
+
+# List all projects
+ptracker list
 
 # Rename a project
 ptracker rename "My Project" "New Name"
 
 # Delete a project
 ptracker delete "My Project"
+
+# Show version
+ptracker --version
 ```
 
 ## How it works
 
 ptracker watches your project folders in real time, logging every file creation,
-modification, rename, and deletion. All activity is saved to a JSON project file
-and a human-readable log file so you can prove to clients exactly what you built
-and when.
+modification, rename, and deletion. Each work session is automatically timed —
+start with `watch`, stop with Ctrl+C, and ptracker saves the session duration,
+file event totals, and activity log automatically.
+
+All data lives in `~/.ptracker` so your projects are accessible from any
+terminal on your machine.
 
 ## Data
 
-Each project creates two files in your current directory:
+All project data is stored globally in your home directory:
 
-- `projectname.json` — structured project data
-- `projectname.log` — timestamped activity log
+```
+~/.ptracker/
+├── projects.json               # global project registry
+└── projects/
+    └── my-project/
+        ├── project.json        # project metadata and totals
+        ├── sessions/
+        │   └── 2026-06-28.json # per-day session file
+        └── logs/
+            └── 2026-06-28.log  # timestamped activity log
+```
 
 ## Release History
 

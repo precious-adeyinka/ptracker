@@ -1,12 +1,16 @@
+use anyhow::Result;
 use clap::{Parser, Subcommand};
 
 mod models;
 use models::Project;
-use models::StorageBackend;
 
 #[derive(Parser)]
-#[command(name = "project-tracker")]
-#[command(about = "A CLI tool for tracking projects effortlessly for freelancers")]
+#[command(
+    name = "ptracker",
+    about = "A CLI tool for tracking projects, file activity and hours for freelancers",
+    long_about = "ptracker tracks your freelance projects in real time.\n\nIt watches folders for file activity, logs sessions with start/end times,\nand keeps everything in ~/.ptracker so your data is available globally.",
+    version
+)]
 struct Cli {
     #[command(subcommand)]
     command: Commands
@@ -17,80 +21,57 @@ enum Commands {
     /// Initialize a new project
     Init {
         name: String,
+        /// Specify project watch path
+        #[arg(short, long, help = "Folder to watch (defaults to current directory)")]
+        path: Option<String>,
     },
-    /// Log hours to a project
+    /// List all projects
+    List,
+    /// Log hours manually to a project
     Log {
-        project_name: String,
+        name: String,
         hours: f64,
     },
     /// Rename a project
     Rename {
-        old_project_name: String,
-        new_project_name: String,
+        old_name: String,
+        new_name: String,
     },
     /// Delete a project
     Delete {
-        project_name: String,
+        name: String,
     },
-    /// Show a project summary
+    /// Show project summary
     Summary {
-        project_name: String
+        name: String,
     },
-    /// Watch a folder and track file activity
+   /// Watch a folder and track file activity
     Watch {
-        project_name: String,
-        path: String,
+        name: String,
+        /// Override watch path for this session
+        #[arg(short, long, help = "Override the watch path for this session")]
+        path: Option<String>,
     },
 }
 
-fn handle_init(name: &str) -> anyhow::Result<()> {
-    let mut project = Project::new(name);
-    StorageBackend::save(&mut project)?;
-    println!("Project '{}' initialized", name);
-
-    Ok(())
-}
-
-fn handle_log(project_name: &str, hours: f64) -> anyhow::Result<()> {
-    Project::log_hours(project_name, hours)?;
-
-    Ok(())
-}
-
-fn handle_rename(old_project_name: &str, new_project_name: &str) -> anyhow::Result<()> {
-    Project::rename_project(old_project_name, new_project_name)?;
-
-    Ok(())
-}
-
-fn handle_delete(project_name: &str) -> anyhow::Result<()> {
-    Project::delete_project(project_name)?;
-
-    Ok(())
-}
-
-fn handle_summary(project_name: &str) -> anyhow::Result<()> {
-    Project::summarize(project_name)?;
-
-    Ok(())
-}
-
-fn handle_watch(project_name: &str, path: &str) -> anyhow::Result<()> {
-    Project::start_watching(project_name, path)?;
-    
-    Ok(())
-}
-
-fn run() -> anyhow::Result<()> {
+fn run() -> Result<()> {
     let cli = Cli::parse();
 
     match cli.command {
-        Commands::Init { name } => handle_init(&name)?,
-        Commands::Log { project_name, hours } => handle_log(&project_name, hours)?,
-        Commands::Rename { old_project_name, new_project_name } => handle_rename(&old_project_name, &new_project_name)?,
-        Commands::Delete { project_name } => handle_delete(&project_name)?,
-        Commands::Summary { project_name } => handle_summary(&project_name)?,
-        Commands::Watch { project_name, path } => handle_watch(&project_name, &path)?,
+        Commands::Init { name, path } =>
+            Project::init(&name, path.as_deref())?,
+        Commands::List =>
+            Project::list()?,
+        Commands::Log { name, hours } =>
+            Project::log_hours(&name, hours)?,
+        Commands::Rename { old_name, new_name } =>
+            Project::rename(&old_name, &new_name)?,
+        Commands::Delete { name } =>
+            Project::delete(&name)?,
+        Commands::Summary { name } =>
+            Project::summary(&name)?,
+        Commands::Watch { name, path } =>
+            Project::watch(&name, path.as_deref())?,
     }
 
     Ok(())

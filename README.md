@@ -2,6 +2,15 @@
 
 A CLI tool for tracking projects, file activity, and hours for freelancers.
 
+### Features
+
+- `init` — initialize a new project
+- `watch` — real-time file system monitoring with deduplication
+- `log` — manually log hours to a project
+- `summary` — view project details and activity logs in a table
+- `rename` — rename a project and its associated files
+- `delete` — remove a project and its logs
+
 |                 |                                             |
 | --------------: | ------------------------------------------- |
 |  Latest Version | [![Latest version][badge-version]][crate]   |
